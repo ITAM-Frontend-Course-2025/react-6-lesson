@@ -1,0 +1,90 @@
+.wrapper {
+	display: grid;
+	gap: 24px;
+	grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+	align-items: start;
+}
+
+.panel {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+
+.value {
+	margin: 0;
+	font-size: 56px;
+	font-weight: 700;
+	text-align: center;
+	color: #27275c;
+}
+
+.valueNote {
+	margin: 0;
+	text-align: center;
+	color: #6c6d92;
+	font-size: 15px;
+}
+
+.primaryActions {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 8px;
+}
+
+.secondaryActions {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.secondaryTitle {
+	margin: 0;
+	font-size: 14px;
+	font-weight: 600;
+	color: #464666;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.hintList {
+	margin: 0;
+	padding-left: 18px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	color: #4f5178;
+	line-height: 1.5;
+}
+
+.hintList li::marker {
+	color: #6366f1;
+}
+
+.supportCard {
+	gap: 16px;
+}
+
+.hint {
+	margin: 0;
+	color: #6366f1;
+	font-weight: 600;
+}
+
+.warning {
+	margin: 0;
+	font-size: 14px;
+	color: #b45309;
+	background: rgba(249, 115, 22, 0.08);
+	border-radius: 10px;
+	padding: 12px;
+	border: 1px solid rgba(249, 115, 22, 0.18);
+}
+
+@media (max-width: 720px) {
+	.value {
+		font-size: 44px;
+	}
+}
+
