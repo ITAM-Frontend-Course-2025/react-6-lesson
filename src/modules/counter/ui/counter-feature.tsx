@@ -83,7 +83,7 @@ const ResetButton: FC<Pick<CounterSectionProps, "setValue">> = ({ setValue }) =>
 );
 
 const SupportSection: FC<SupportSectionProps> = ({ value, setValue }) => (
-	<Card title="Почему это неудобно?" className={styles.supportCard}>
+	<Card title="Почему работать через props это неудобно?" className={styles.supportCard}>
 		<p className={styles.hint}>
 			setValue передаётся через пять разных компонентов, хотя необходимость изменить значение есть только у кнопок.
 		</p>
