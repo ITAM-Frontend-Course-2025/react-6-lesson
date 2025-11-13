@@ -42,7 +42,7 @@ const CounterPanel: FC<CounterSectionProps> = ({ value, setValue }) => (
 const CounterDisplay: FC<Pick<CounterSectionProps, "value">> = ({ value }) => (
 	<div>
 		<p className={styles.value}>{value}</p>
-		<p className={styles.valueNote}>Число хранится в `CounterFeature` и передаётся вниз по иерархии.</p>
+		<p className={styles.valueNote}>Число хранится в CounterFeature и передаётся вниз по иерархии.</p>
 	</div>
 );
 
@@ -89,11 +89,11 @@ const SupportSection: FC<SupportSectionProps> = ({ value, setValue }) => (
 		</p>
 
 		<ul className={styles.hintList}>
-			<li>`CounterFeature` держит состояние и раздаёт setValue.</li>
-			<li>`CounterSection` и `CounterPanel` просто пробрасывают пропсы дальше.</li>
-			<li>`CounterControls` разделяет логику и всё равно прокидывает setValue.</li>
+			<li>CounterFeature держит состояние и раздаёт setValue.</li>
+			<li>CounterSection и CounterPanel просто пробрасывают пропсы дальше.</li>
+			<li>CounterControls разделяет логику и всё равно прокидывает setValue.</li>
 			<li>
-				Отдельные кнопки (`IncrementByOneButton`, `IncrementByTenButton`) берут ту же функцию, хотя находятся глубоко в
+				Отдельные кнопки (IncrementByOneButton, IncrementByTenButton) берут ту же функцию, хотя находятся глубоко в
 				дереве.
 			</li>
 		</ul>
@@ -105,7 +105,7 @@ const SupportSection: FC<SupportSectionProps> = ({ value, setValue }) => (
 const PracticeReminder: FC<SupportSectionProps> = ({ value, setValue }) => (
 	<div>
 		<p className={styles.warning}>
-			Попробуйте объяснить, откуда здесь берётся `setValue`. При усложнении проекта следить за такими связями становится
+			Попробуйте объяснить, откуда здесь берётся setValue. При усложнении проекта следить за такими связями становится
 			почти невозможно.
 		</p>
 		<Button onClick={() => setValue(value + 5)}>Ещё +5 из обучающего блока</Button>
