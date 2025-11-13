@@ -1,73 +1,63 @@
-# React + TypeScript + Vite
+# Рефакторинг: от prop drilling к единому состоянию
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+В проекте реализован простой счётчик. Состояние (`useState`) хранится в корневом компоненте `CounterFeature` и передаётся цепочкой пропсов до глубоко вложенных кнопок. Это классическая ситуация проп-дриллинга: каждая прослойка знает о `setState`, хотя фактически этим API пользуются пара компонентов.
 
-Currently, two official plugins are available:
+## Архитектура проекта
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- `src/app` — точка входа приложения (`App`, `main`, глобальные стили `index.css`).
+- `src/pages` — страницы. Сейчас есть `counter`, который подключает функциональность счётчика.
+- `src/modules` — самостоятельные модули. В `counter` лежит вся логика и UI для текущего примера.
+- `src/shared` — переиспользуемые части (кнопка, карточка и т.д.), оформленные через CSS Modules.
 
-## React Compiler
+## Ваше задание
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Переписать модуль счётчика на `useReducer` + контекст, чтобы состояние управлялось из одного места и не приходилось пробрасывать `setState` через каждый уровень.
 
-## Expanding the ESLint configuration
+### Цели рефакторинга
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. Создать единый стор с `useReducer`, который хранит значение счётчика и поддерживает операции `-1`, `+1`, `+5`, `+10`, `×2`, `reset`.
+2. Организовать доступ к состоянию и диспатчу через контекст, чтобы любой компонент мог получать данные без проп-дриллинга.
+3. Минимизировать связанность компонентов: избавить прослойки от лишних пропсов, оставить только то, что необходимо для отображения.
+4. Сохранить текущую архитектуру и стили. Внешний вид после рефакторинга должен остаться тем же.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Подробный план
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1. **Проанализируйте дерево компонентов.** Зафиксируйте, какие пропсы сейчас проходят через каждый уровень. Это поможет убедиться, что после рефакторинга ничего не потерялось.
+2. **Опишите типы состояния и действий.**
+   - Создайте перечисление допустимых экшенов (`increment`, `incrementByTen`, `double`, `reset` и т.д.).
+   - Определите интерфейс состояния (`{ value: number }`).
+3. **Реализуйте редьюсер.**
+   - В отдельном файле модуля (`modules/counter/model` или `modules/counter/lib`) опишите `counterReducer`.
+   - Не забудьте обрабатывать значения по умолчанию и граничные случаи (например, проверять, что счётчик не уходит в отрицательное значение, если это требование задачи).
+4. **Создайте контекст.**
+   - Контекст должен предоставлять и состояние, и функцию `dispatch`.
+   - Вынесите обёртку `CounterProvider`, которая инициализирует `useReducer` и прокидывает значения дальше.
+5. **Подключите провайдер.**
+   - Оберните содержимое `CounterFeature` в `CounterProvider`.
+   - Уберите `useState` — после этого компонент должен получать данные из контекста.
+6. **Обновите дочерние компоненты.**
+   - Очистите пропсы `value` и `setValue`.
+   - Вместо них используйте `useContext` (или кастомный хук) внутри каждого компонента, который работает со счётчиком.
+7. **Перепроверьте обработчики.**
+   - Каждая кнопка теперь должна отправлять нужный экшен через `dispatch`.
+   - Если есть дополнительные вычисления (например, `×2` или `+5` из обучающего блока), тоже реализуйте их через редьюсер.
+8. **Приведите код к единому виду.**
+   - Удалите неиспользуемые типы и импорты.
+   - Проверьте, что все компоненты по-прежнему используют CSS Modules.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Критерии приёмки
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Нет проп-дриллинга `setState`: состояние и `dispatch` приходят из контекста.
+- Все пользовательские сценарии работают так же, как до рефакторинга.
+- Структура каталогов (`app`, `pages`, `modules`, `shared`) сохранена.
+- TypeScript собирается без ошибок, ESLint проходит успешно.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Что проверить перед сдачей
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Пройдитесь по UI: каждая кнопка должна обновлять значение корректно.
+- Убедитесь, что нет лишних перерендеров (можно проверить в React DevTools).
+- Протестируйте граничные сценарии: быстрые клики, чередование действий, reset.
+- Обновите документацию, если добавили новые функции или поменяли названия файлов.
+
+Удачи с рефакторингом! После перехода на `useReducer` + контекст код станет проще расширять и сопровождать, а пример будет ближе к реальным приложениям с единым источником правды.
+

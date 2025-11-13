@@ -1,8 +1,7 @@
 import type { FC } from "react";
-import { RouterProvider } from "react-router-dom";
-import { router } from "./router";
+import { CounterPage } from "../pages/counter";
 
-export const App: FC = () => <RouterProvider router={router} />;
+export const App: FC = () => <CounterPage />;
 
 export default App;
 

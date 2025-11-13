@@ -1,21 +1,11 @@
-import React from 'react'
+import clsx from "clsx";
+import type { ButtonHTMLAttributes, FC } from "react";
+import styles from "./button.module.css";
 
-export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>
+export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const Button: React.FC<ButtonProps> = ({ children, ...props }) => {
-	return (
-		<button
-			{...props}
-			style={{
-				padding: '8px 12px',
-				margin: '4px',
-				borderRadius: '4px',
-				border: '1px solid #ccc',
-				cursor: 'pointer',
-				background: '#f5f5f5',
-			}}
-		>
-			{children}
-		</button>
-	)
-}
+export const Button: FC<ButtonProps> = ({ className, children, ...props }) => (
+	<button {...props} className={clsx(styles.button, className)}>
+		{children}
+	</button>
+);

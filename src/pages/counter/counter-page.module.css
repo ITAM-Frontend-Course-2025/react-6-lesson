@@ -1,0 +1,38 @@
+.page {
+	margin: 0 auto;
+	max-width: 960px;
+	padding: 48px 24px 64px;
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+}
+
+.header {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.title {
+	margin: 0;
+	font-size: 32px;
+}
+
+.description {
+	margin: 0;
+	max-width: 640px;
+	color: #4a4a68;
+	font-size: 16px;
+	line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+	.page {
+		padding: 32px 16px 48px;
+	}
+
+	.title {
+		font-size: 26px;
+	}
+}
+
