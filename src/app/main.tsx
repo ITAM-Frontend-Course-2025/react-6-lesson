@@ -2,7 +2,6 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './app';
 import './index.css';
-import { StoreProvider } from './redux.tsx';
 
 const rootElement = document.getElementById('root');
 
@@ -12,9 +11,9 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
 	<StrictMode>
-		<StoreProvider>
+		{/*<StoreProvider>*/}
 			<App/>
-		</StoreProvider>
+		{/*</StoreProvider>*/}
 	</StrictMode>,
 );
 

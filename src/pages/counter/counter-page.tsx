@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { CounterFeature, CounterRedux, CounterUseState } from '../../modules/counter';
+import { CounterFeature } from '../../modules/counter';
 import styles from './counter-page.module.css';
 
 export const CounterPage: FC = () => {
@@ -14,11 +14,6 @@ export const CounterPage: FC = () => {
 				</p>
 			</section>
 
-
-			<div style={{display: 'flex', gap: '24px', flexWrap: 'wrap', marginTop: '16px'}}>
-				<CounterRedux/>
-				<CounterUseState/>
-			</div>
 			<CounterFeature/>
 		</div>
 	);
